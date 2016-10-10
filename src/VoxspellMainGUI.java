@@ -36,6 +36,7 @@ public class VoxspellMainGUI extends JPanel {
 	private static JFrame _currentFrame;
 	private JButton _startButton;
 	private JButton _settingsButton;
+	private JButton _helpButton;
 	private static int[][] _stats = new int[10][3];
 	private static int _highestLevelUnlocked = 0;
 	private static ArrayList<String> _quizList;
@@ -47,29 +48,41 @@ public class VoxspellMainGUI extends JPanel {
 	private static String _wordList;
 	
 	public VoxspellMainGUI() {
-		_startButton = new JButton("Begin Quiz");
+		
 		
 		//Create image settings button
 		FileHandler fh = new FileHandler();
 		BufferedImage settingsImage = null;
+		BufferedImage beginQuizImage = null;
+		BufferedImage helpImage = null;
 		try {
 			settingsImage = ImageIO.read(fh.getFileAsInputStream("settings_icon.png"));
+			beginQuizImage = ImageIO.read(fh.getFileAsInputStream("icon_Begin_Quiz.png"));
+			helpImage = ImageIO.read(fh.getFileAsInputStream("help_icon.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		_startButton = new JButton(new ImageIcon(beginQuizImage));
 		_settingsButton = new JButton(new ImageIcon(settingsImage));
+		_helpButton = new JButton(new ImageIcon(helpImage));
 		
 		//Construct the GUI
 		SpringLayout layout = new SpringLayout();
 		setLayout(layout);
 		add(_startButton);
 		add(_settingsButton);
+		add(_helpButton);
 		//Center the start button
 		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _startButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
-		layout.putConstraint(SpringLayout.VERTICAL_CENTER, _startButton, 0, SpringLayout.VERTICAL_CENTER, this);
-		//Put settings button in top right corner
-		layout.putConstraint(SpringLayout.NORTH, _settingsButton, 0, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.EAST, _settingsButton, 0, SpringLayout.EAST, this);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, _startButton, -50, SpringLayout.VERTICAL_CENTER, this);
+		//Put settings button
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _settingsButton, 0, SpringLayout.HORIZONTAL_CENTER, _startButton);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, _settingsButton, 100, SpringLayout.VERTICAL_CENTER, _startButton);
+		
+		layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _helpButton, 0, SpringLayout.HORIZONTAL_CENTER, _startButton);
+		layout.putConstraint(SpringLayout.VERTICAL_CENTER, _helpButton, 200, SpringLayout.VERTICAL_CENTER, _startButton);
+		
 		setPreferredSize(new Dimension(400, 500));
 		
 		//Add action listeners
@@ -104,6 +117,16 @@ public class VoxspellMainGUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				_currentFrame.add(new SettingsGUI());
+				setVisible(false);
+				repaint();
+			}
+		});
+		
+
+		_helpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_currentFrame.add(new HelpGUI());
 				setVisible(false);
 				repaint();
 			}
@@ -279,8 +302,8 @@ public class VoxspellMainGUI extends JPanel {
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _completedFive, 0, SpringLayout.VERTICAL_CENTER, this);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _levelFive, 0, SpringLayout.VERTICAL_CENTER, _completedFive);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _accuracyFive, 0, SpringLayout.VERTICAL_CENTER, _completedFive);
-			layout.putConstraint(SpringLayout.NORTH, _returnButton, 0, SpringLayout.NORTH, this);
-			layout.putConstraint(SpringLayout.EAST, _returnButton, 0, SpringLayout.EAST, this);
+			layout.putConstraint(SpringLayout.NORTH, _returnButton, 15, SpringLayout.NORTH, this);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _returnButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			
 			//Layout each button in line vertically and horizontally
 			for (int j = 3; j >= 0; j--) {
@@ -378,8 +401,8 @@ public class VoxspellMainGUI extends JPanel {
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _voiceBox, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _voiceBox, -60, SpringLayout.VERTICAL_CENTER, this);
 			//Put return button in top right corner
-			layout.putConstraint(SpringLayout.NORTH, _returnButton, 0, SpringLayout.NORTH, this);
-			layout.putConstraint(SpringLayout.EAST, _returnButton, 0, SpringLayout.EAST, this);
+			layout.putConstraint(SpringLayout.NORTH, _returnButton, 40, SpringLayout.NORTH, this);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _returnButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			//Put voice label above voice choices box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voiceLabel, 0, SpringLayout.HORIZONTAL_CENTER, _voiceBox);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, voiceLabel, -30, SpringLayout.VERTICAL_CENTER, _voiceBox);
@@ -438,6 +461,48 @@ public class VoxspellMainGUI extends JPanel {
 		
 	}
 	
+
+	public class HelpGUI extends JPanel {
+		
+		private JButton _returnButton = new JButton();
+		
+		public HelpGUI() {
+			
+			//Create image settings button
+			FileHandler fh = new FileHandler();
+			BufferedImage settingsImage = null;
+			try {
+				settingsImage = ImageIO.read(fh.getFileAsInputStream("return_icon.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			_returnButton = new JButton(new ImageIcon(settingsImage));
+			
+			//Construct the GUI
+			SpringLayout layout = new SpringLayout();
+			setLayout(layout);
+			add(_returnButton);
+
+			layout.putConstraint(SpringLayout.NORTH, _returnButton, 40, SpringLayout.NORTH, this);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _returnButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
+			
+
+			setPreferredSize(new Dimension(400, 500));
+			
+			//Add action listeners
+			_returnButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					_currentFrame.add(new VoxspellMainGUI());
+					setVisible(false);
+					repaint();
+				}
+			});
+		}
+		
+	}
+	
+	
 	public class QuestionsGUI extends JPanel {
 		
 		private JButton _backButton = new JButton();
@@ -480,11 +545,11 @@ public class VoxspellMainGUI extends JPanel {
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _textBox, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _textBox, 0, SpringLayout.VERTICAL_CENTER, this);
 			//Put return button in top right corner
-			layout.putConstraint(SpringLayout.NORTH, _backButton, 0, SpringLayout.NORTH, this);
-			layout.putConstraint(SpringLayout.EAST, _backButton, 0, SpringLayout.EAST, this);
+			layout.putConstraint(SpringLayout.NORTH, _backButton, 40, SpringLayout.NORTH, this);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _backButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			//Put speech icon above text box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _speechButton, 0, SpringLayout.HORIZONTAL_CENTER, _textBox);
-			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _speechButton, -35, SpringLayout.VERTICAL_CENTER, _textBox);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _speechButton, -50, SpringLayout.VERTICAL_CENTER, _textBox);
 			//Put submit icon above text box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _submitButton, 100, SpringLayout.HORIZONTAL_CENTER, _textBox);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _submitButton, 0, SpringLayout.VERTICAL_CENTER, _textBox);
