@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
@@ -465,6 +466,7 @@ public class VoxspellMainGUI extends JPanel {
 	public class HelpGUI extends JPanel {
 		
 		private JButton _returnButton = new JButton();
+		private JTextArea _helpText = new JTextArea();
 		
 		public HelpGUI() {
 			
@@ -477,14 +479,19 @@ public class VoxspellMainGUI extends JPanel {
 				e.printStackTrace();
 			}
 			_returnButton = new JButton(new ImageIcon(settingsImage));
+			_helpText = new JTextArea("Hello, and welcome to VoxSpell, the spelling quiz game!\n\nIn this game, you will listen to a list of words, and it is\nyour job to spell them correctly!\n\nTo get started, select begin quiz from the main menu\nand select a starting level. Now you will see a screen\nwhere you can choose a level to practice your\nspelling on. To access more difficult levels, you\nmust first beat the previous level with good marks!\n\nOn the quiz screen, you will see a text field in the\nmiddle. After listening to the word, type your answer\nin the field and click the submit button to the right. If\nyou are correct, then you can attempt the next\nword. Otherwise, you can have another try, but this will\nnot count towards your progress!\n\nIf you mishear the word, then click the speaker button\nto repeat the word. If you are unsure of what the word\nmeans and would like a definition, then click the\ndictionary button.\n\nIf you do well in a test, then you may be able\nto watch a special video reward!");
 			
 			//Construct the GUI
 			SpringLayout layout = new SpringLayout();
 			setLayout(layout);
 			add(_returnButton);
+			add(_helpText);
 
 			layout.putConstraint(SpringLayout.NORTH, _returnButton, 40, SpringLayout.NORTH, this);
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _returnButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
+			
+			layout.putConstraint(SpringLayout.NORTH, _helpText, 100, SpringLayout.NORTH, this);
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _helpText, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			
 
 			setPreferredSize(new Dimension(400, 500));
@@ -508,6 +515,7 @@ public class VoxspellMainGUI extends JPanel {
 		private JButton _backButton = new JButton();
 		private JButton _speechButton = new JButton();
 		private JButton _submitButton = new JButton();
+		private JButton _dictButton = new JButton();
 		private JTextField _textBox = new JTextField("Enter Word:            ", 12);
 		
 		public QuestionsGUI() {
@@ -517,10 +525,12 @@ public class VoxspellMainGUI extends JPanel {
 			BufferedImage backImage = null;
 			BufferedImage volImage = null;
 			BufferedImage enterImage = null;
+			BufferedImage dictImage = null;
 			try {
 				backImage = ImageIO.read(fh.getFileAsInputStream("return_icon.png"));
 				volImage = ImageIO.read(fh.getFileAsInputStream("volume_icon.png"));
 				enterImage = ImageIO.read(fh.getFileAsInputStream("enter_icon.png"));
+				dictImage = ImageIO.read(fh.getFileAsInputStream("dictionary_icon.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -528,6 +538,7 @@ public class VoxspellMainGUI extends JPanel {
 			_backButton = new JButton(new ImageIcon(backImage));
 			_speechButton = new JButton(new ImageIcon(volImage));
 			_submitButton = new JButton(new ImageIcon(enterImage));
+			_dictButton = new JButton(new ImageIcon(dictImage));
 			
 			//Construct the GUI
 			SpringLayout layout = new SpringLayout();
@@ -537,6 +548,7 @@ public class VoxspellMainGUI extends JPanel {
 			add(_backButton);
 			add(_speechButton);
 			add(_submitButton);
+			add(_dictButton);
 			final JLabel scoreLabel = new JLabel("SCORE: 0 out of 0");
 			final JLabel progressLabel = new JLabel("PROGRESS: 0 of 10");
 			add(scoreLabel);
@@ -549,10 +561,14 @@ public class VoxspellMainGUI extends JPanel {
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _backButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
 			//Put speech icon above text box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _speechButton, 0, SpringLayout.HORIZONTAL_CENTER, _textBox);
-			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _speechButton, -50, SpringLayout.VERTICAL_CENTER, _textBox);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _speechButton, -60, SpringLayout.VERTICAL_CENTER, _textBox);
 			//Put submit icon above text box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _submitButton, 100, SpringLayout.HORIZONTAL_CENTER, _textBox);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _submitButton, 0, SpringLayout.VERTICAL_CENTER, _textBox);
+			
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _dictButton, 0, SpringLayout.HORIZONTAL_CENTER, _textBox);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _dictButton, 60, SpringLayout.VERTICAL_CENTER, _textBox);
+			
 			//Put score label in bottom left, progress label in bottom right
 			layout.putConstraint(SpringLayout.SOUTH, scoreLabel, -5, SpringLayout.SOUTH, this);
 			layout.putConstraint(SpringLayout.WEST, scoreLabel, 5, SpringLayout.WEST, this);
