@@ -7,6 +7,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 @SuppressWarnings("serial")
 public class VoxspellMainGUI extends JPanel {
@@ -41,6 +44,7 @@ public class VoxspellMainGUI extends JPanel {
 	private static int _currentScore;
 	private static int _attempt;
 	private static String _voice;
+	private static String _wordList;
 	
 	public VoxspellMainGUI() {
 		_startButton = new JButton("Begin Quiz");
@@ -348,6 +352,7 @@ public class VoxspellMainGUI extends JPanel {
 		private JButton _returnButton = new JButton();
 		private String[] voiceOptions = new String[]{"Default", "New Zealand"};
 		private JComboBox<String> _voiceBox = new JComboBox<>(voiceOptions);
+		private JButton _listButton = new JButton("Change Word List");
 		
 		public SettingsGUI() {
 			
@@ -366,17 +371,25 @@ public class VoxspellMainGUI extends JPanel {
 			setLayout(layout);
 			add(_voiceBox);
 			add(_returnButton);
+			add(_listButton);
 			JLabel voiceLabel = new JLabel("<HTML><U>Select Voice: </U></HTML>");
 			add(voiceLabel);
 			//Center the voice choices box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _voiceBox, 0, SpringLayout.HORIZONTAL_CENTER, this);
-			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _voiceBox, 0, SpringLayout.VERTICAL_CENTER, this);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _voiceBox, -60, SpringLayout.VERTICAL_CENTER, this);
 			//Put return button in top right corner
 			layout.putConstraint(SpringLayout.NORTH, _returnButton, 0, SpringLayout.NORTH, this);
 			layout.putConstraint(SpringLayout.EAST, _returnButton, 0, SpringLayout.EAST, this);
 			//Put voice label above voice choices box
 			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, voiceLabel, 0, SpringLayout.HORIZONTAL_CENTER, _voiceBox);
 			layout.putConstraint(SpringLayout.VERTICAL_CENTER, voiceLabel, -30, SpringLayout.VERTICAL_CENTER, _voiceBox);
+			
+			layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, _listButton, 0, SpringLayout.HORIZONTAL_CENTER, _voiceBox);
+			layout.putConstraint(SpringLayout.VERTICAL_CENTER, _listButton, 110, SpringLayout.VERTICAL_CENTER, _voiceBox);
+			
+			
+			
+			
 			setPreferredSize(new Dimension(400, 500));
 			
 			//Add action listeners
@@ -402,6 +415,23 @@ public class VoxspellMainGUI extends JPanel {
 						festival f = new festival("New Zealand");
 						f.execute();
 					}
+				}
+			});
+			
+			_listButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					File workingDirectory = new File(System.getProperty("user.dir"));
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+					
+					final JFileChooser fc = new JFileChooser(workingDirectory);
+					fc.setFileFilter(filter);
+					//fc.setCurrentDirectory(File dir);
+					int value = fc.showOpenDialog(_currentFrame);
+			        if (value == JFileChooser.APPROVE_OPTION) {
+			            _wordList = fc.getSelectedFile().getName();
+			        
+			        }
 				}
 			});
 		}
@@ -580,7 +610,7 @@ public class VoxspellMainGUI extends JPanel {
 		
 		try {
 
-			BufferedReader br = new BufferedReader(new FileReader("NZCER-spelling-lists.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(_wordList));
 
 			String currentWord;
 
@@ -772,6 +802,7 @@ public class VoxspellMainGUI extends JPanel {
 		}
 		
 		_voice = "voice_kal_diphone";
+		_wordList = "NZCER-spelling-lists.txt";
 		
 		//Create and show the GUI
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

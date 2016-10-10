@@ -14,7 +14,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 public class SpellingQuizMediaPlayer {
 
 	public SpellingQuizMediaPlayer(String filename) {
-		JFrame frame = new JFrame("Video Reward");
+		final JFrame frame = new JFrame("Video Reward");
 		
 		MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory();
 		
@@ -26,13 +26,13 @@ public class SpellingQuizMediaPlayer {
 		p2.setLayout(new BorderLayout());
 		p.add(canvas,  BorderLayout.CENTER);
 		JButton stopButton = new JButton("Stop");
-		JButton pauseButton = new JButton("Pause");
+		final JButton pauseButton = new JButton("Pause");
 		p2.add(stopButton, BorderLayout.EAST);
 		p2.add(pauseButton, BorderLayout.WEST);
 		frame.add(p, BorderLayout.CENTER);
 		frame.add(p2, BorderLayout.SOUTH);
 		
-		EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
+		final EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
 		mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(canvas));
 
 		stopButton.addActionListener(new ActionListener() {
