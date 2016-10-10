@@ -11,27 +11,33 @@ skills.
 	
 	In Linux, ensure that you have both Festival and the voice akl_nz_jdt_diphone
 	installed. Also, a Java version of 1.7 or greater must be present on your system.
-	Ensure that the file 'NZCER-spelling-lists.txt' is present in the program folder.
+	Ensure that the file 'NZCER-spelling-lists.txt'* is present in the program folder.
 	This file allows the user to edit the dictionary of words used in the spelling
 	quiz.
 
 	To run Voxspell, simply execute VoxspellPrototype.jar.
 
+	*If you would like to use a spelling list of your own, place it in the program
+	directory and change to it in the program settings.
+
 2. Program Instructions:
 
 	Main Menu:
 
-	When Voxspell starts, you will be presented with 2 options. Click "Begin Quiz"
-	to start a new quiz, or press the gear in the top right to view the settings.
-	The first time you start a quiz, you will be asked which level you would like to
-	start from. Choose one from the drop-down menu and press "OK" to continue, or
-	"Back" to go back to the main menu.
+	When Voxspell starts, you will be presented with 3 options. Click "Begin Quiz"
+	to start a new quiz, click the settings button to view the settings, or click the
+	help button to get further help with using the program.	The first time you start
+	a quiz, you will be asked which level you would like to	start from. Choose one 
+	from the drop-down menu and press "OK" to continue, or "Back" to go back to the 
+	main menu.
 
 	Settings:
 
 	In this menu you are able to change the voice Voxspell speaks to you in. Simply
 	choose a voice you like from the drop-down menu. Click the back button to return
-	to the main menu.
+	to the main menu. You are also able to change the list of words used in the test.
+	Click on the 'change word list' button, navigate to the directory it can be found
+	in, and press ok to enable it.
 
 	Quiz Select:
 

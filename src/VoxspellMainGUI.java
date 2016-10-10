@@ -8,6 +8,7 @@ import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -30,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 @SuppressWarnings("serial")
 public class VoxspellMainGUI extends JPanel {
@@ -548,7 +550,7 @@ public class VoxspellMainGUI extends JPanel {
 			add(_backButton);
 			add(_speechButton);
 			add(_submitButton);
-			add(_dictButton);
+			//add(_dictButton);
 			final JLabel scoreLabel = new JLabel("SCORE: 0 out of 0");
 			final JLabel progressLabel = new JLabel("PROGRESS: 0 of 10");
 			add(scoreLabel);
@@ -603,6 +605,14 @@ public class VoxspellMainGUI extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					festival f = new festival("0");
+					f.execute();
+				}
+			});
+			
+			_dictButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					festival f = new festival("4");
 					f.execute();
 				}
 			});
@@ -802,6 +812,7 @@ public class VoxspellMainGUI extends JPanel {
 		//mode 1 = "Correct"
 		//mode 2 = "Incorrect"
 		//mode 3 = "Try Once More"
+		//mode 4 = "Dictionary"
 		//mode 'voice type' eg. default = "This is the ___ voice"
 		String _mode;
 		
@@ -857,6 +868,22 @@ public class VoxspellMainGUI extends JPanel {
 				output.close();
 				process.waitFor();
 			}
+			/*else if (_mode.equals("4")){
+				System.out.println("working");
+
+
+				System.out.println("done");
+				
+				Runtime runtime = Runtime.getRuntime();
+				Process process = runtime.exec("festival --pipe");
+				OutputStream output = process.getOutputStream();
+				output.write(("(voice_" + _voice + ")n").getBytes());
+				output.flush();
+				output.write(("(SayText \"" + "Please Spell " + _quizList.get(_currentWordIndex) + "\")n").getBytes());
+				output.flush();
+				output.close();
+				process.waitFor();
+			}*/
 			else{
 				Runtime runtime = Runtime.getRuntime();
 				Process process = runtime.exec("festival --pipe");
